@@ -1,12 +1,19 @@
-from flask import Flask, render_template, request, Response, redirect
+from flask import Flask, render_template, request, Response, redirect, session
+
+from flask_session import Session
 
 app = Flask(__name__)
+
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 get_in = 17
 get_out = 12
 change_line = 10
 station_time = 2
 c = 'mashhad'
+
 
 def get_lines(city):
         lines = []
@@ -116,11 +123,15 @@ def route(s,e, city):
 @app.route('/', methods=['GET', 'Post'])
 def index():
     if request.method == 'GET':
+        if not session['city']:
+            cc = c
+        else:
+            cc = session['city']
         stations = set()
-        for line in get_lines(c):
+        for line in get_lines(cc):
             for station in line:
                 stations.add(station)
-        return render_template('index.html', stations=sorted(stations), city=c.title())
+        return render_template('index.html', stations=sorted(stations), city=cc.title())
     elif request.method == 'POST':
         start = request.form.get('start')
         end = request.form.get('dest')
@@ -132,8 +143,9 @@ def index():
 def changecity():
     if request.method == 'POST':
         new_city = request.form.get('city')
-        global c
-        c = new_city
+        # global c
+        # c = new_city
+        session['city'] = new_city
         return redirect('/')
 
 if __name__ == '__main__':
