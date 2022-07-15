@@ -6,37 +6,37 @@ get_in = 17
 get_out = 12
 change_line = 10
 station_time = 2
-c = 'tehran'
+c = 'mashhad'
 
-def get_lines(c):
+def get_lines(city):
         lines = []
-        with open(f'{c}.txt','r') as f:
+        with open(f'{city}.txt','r') as f:
             for line in f:
                 lines.append(line.strip().split())
         return lines
 
-def which_line(s):
-    lines = get_lines(c)
+def which_line(s,city):
+    lines = get_lines(city)
     in_lines = list()
     for i,l in enumerate(lines):
         if s in l:
             in_lines.append(i)
     return in_lines
 
-def get_intersextions():
+def get_intersextions(city):
     intersections = dict()
-    lines = get_lines(c)
+    lines = get_lines(city)
     for line in lines:
         for station in line:
-            if len(which_line(station)) > 1:
-                intersections[station] = which_line(station)
+            if len(which_line(station,city)) > 1:
+                intersections[station] = which_line(station,city)
     return intersections
     
 
-def get_ints(s,e):
-    intersections = get_intersextions()
-    s_lines = which_line(s)
-    e_lines = which_line(e)
+def get_ints(s,e,city):
+    intersections = get_intersextions(city)
+    s_lines = which_line(s,city)
+    e_lines = which_line(e,city)
     intss = []
     for sl in s_lines:
             for el in e_lines:
@@ -45,10 +45,10 @@ def get_ints(s,e):
                         intss.append([sl, el, ints])
     return intss
 
-def get_ints_lvl_2(s,e):
-    intersections = get_intersextions()
-    s_lines = which_line(s)
-    e_lines = which_line(e)
+def get_ints_lvl_2(s,e,city):
+    intersections = get_intersextions(city)
+    s_lines = which_line(s,city)
+    e_lines = which_line(e,city)
     intss = []
     for sl in s_lines:
             for el in e_lines:
@@ -64,10 +64,10 @@ def get_ints_lvl_2(s,e):
                                 intss.append([intersections[jj][0],intersections[jj][1],intersections[ii][1],jj,ii])
     return intss
 
-def route(s,e):
-    lines = get_lines(c)
-    s_lines = which_line(s)
-    e_lines = which_line(e)
+def route(s,e, city):
+    lines = get_lines(city)
+    s_lines = which_line(s,city)
+    e_lines = which_line(e,city)
 
     for sl in s_lines:
         if sl in e_lines:
@@ -79,7 +79,7 @@ def route(s,e):
             route += f'\nEstimatad time: {total} minutes\n'
             return route
     else:
-        if intss := get_ints(s,e):
+        if intss := get_ints(s,e,city):
             route = ''
             for j, i in enumerate(intss, 1):
                 ss, ee, ints = i
@@ -94,7 +94,7 @@ def route(s,e):
 
             return route
         else:
-            intss_2 = get_ints_lvl_2(s,e)
+            intss_2 = get_ints_lvl_2(s,e,city)
             route = ''
             for j, i in enumerate(intss_2,1):
                 try:
@@ -124,7 +124,8 @@ def index():
     elif request.method == 'POST':
         start = request.form.get('start')
         end = request.form.get('dest')
-        return Response(f'<h1>{route(start, end)}</h1></br><a href="/">Home</a>'.replace('\n','</br></br>'))
+        city = request.form.get('city')
+        return Response(f'<h1>{route(start, end, city)}</h1></br><a href="/">Home</a>'.replace('\n','</br></br>'))
 
 
 @app.route('/changecity',methods=['Post'])
