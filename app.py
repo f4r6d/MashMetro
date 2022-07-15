@@ -15,7 +15,7 @@ def index():
     elif request.method == 'POST':
         start = request.form.get('start')
         end = request.form.get('dest')
-        return Response(f'<h2>{route(start, end)}</h2></br><a href="/">Home</a>'.replace('\n','</br>'))
+        return Response(f'<h1>{route(start, end)}</h1></br><a href="/">Home</a>'.replace('\n','</br></br>'))
 
 if __name__ == '__main__':
     app.run()
