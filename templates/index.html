@@ -7,11 +7,11 @@
 <h1>{{ city }} Subway Route Finder!</h1>
 
 
-<form method="POST" action="/" class="form-group align-items-center">
+<form method="POST" action="/" class="form-group align-items-center" id="cityform">
   <label for="city">City: </label>
-  <select id="city" name="city" class="custom-select">
-      <option value="mashhad">Mashhad</option>
-      <option value="tehran">Tehran</option>
+  <select id="city" name="city" class="custom-select" onchange="changecity()">
+      <option {% if city == 'Mashhad' %}selected{% endif %} value="mashhad">Mashhad</option>
+      <option {% if city == 'Tehran' %}selected{% endif %} value="tehran">Tehran</option>
   </select>
   <label for="start">Start: </label>
   <select id="start" name="start" class="custom-select">
@@ -30,5 +30,14 @@
   <input type="submit" value="Find Route!" class="btn btn-secondary btn-lg btn-block">
 </form>
 
+<script type="text/javascript">
+  function changecity()
+  {
+      form=document.getElementById('cityform');
+      form.action='/changecity';
+      form.submit();
+      form.action='/';
+  }
+</script>
 
 {% endblock %}
