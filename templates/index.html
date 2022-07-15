@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ city }} Subway Route Finder!{% endblock %}
+
+{% block main %}
+
+<h1>{{ city }} Subway Route Finder!</h1>
+
+
+<form method="POST" action="/" class="form-group align-items-center">
+  <label for="city">City: </label>
+  <select id="city" name="city" class="custom-select">
+      <option value="mashhad">Mashhad</option>
+      <option value="tehran">Tehran</option>
+  </select>
+  <label for="start">Start: </label>
+  <select id="start" name="start" class="custom-select">
+    {% for s in stations %}
+      <option value="{{ s }}">{{ s }}</option>
+    {% endfor %}
+  </select>
+  <label for="dest">Destination: </label>
+  <select id="dest" name="dest" class="custom-select">
+    {% for s in stations %}
+      <option value="{{ s }}">{{ s }}</option>
+    {% endfor %}
+  </select>
+  </br>
+  </br>
+  <input type="submit" value="Find Route!" class="btn btn-secondary btn-lg btn-block">
+</form>
+
+
+{% endblock %}
