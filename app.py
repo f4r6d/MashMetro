@@ -123,10 +123,10 @@ def route(s,e, city):
 @app.route('/', methods=['GET', 'Post'])
 def index():
     if request.method == 'GET':
-        if not session['city']:
-            cc = c
-        else:
+        try:
             cc = session['city']
+        except:
+            cc = c
         stations = set()
         for line in get_lines(cc):
             for station in line:
