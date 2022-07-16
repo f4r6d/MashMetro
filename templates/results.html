@@ -4,7 +4,7 @@
 
 {% block main %}
 
-<h1>{{ ct|title }} Subway {{ start }} To {{ end }} Route Routes!</h1>
+<h1>{{ ct|title }} Subway {{ start|replace('_',' ') }} To {{ end|replace('_',' ') }} Route Routes!</h1>
 
 </br>
 
@@ -13,9 +13,9 @@
     <tr>
       <th scope="col">
         {% if routes|length > 1 %}
-          {{ routes|length }} Routes
+        {{ routes|length }} Routes
         {% else %}
-          1 Route
+        1 Route
         {% endif %}
       </th>
       <th scope="col">Route</th>
@@ -24,20 +24,46 @@
     </tr>
   </thead>
   <tbody>
-    {% for route in routes %}
     <tr>
-      <th scope="row">{{ route[3] }}</th>
+      <th scope="row">{{ routes[0][3] }}</th>
       <td>
-        {% for r in route[0] %}
+        {% for r in routes[0][0] %}
         {{ r }}</br>
         {% endfor %}
       </td>
-      <td>{{ route[1] }}</td>
-      <td>{{ route[2] }}</td>
+      <td>{{ routes[0][1] }}</td>
+      <td>{{ routes[0][2] }}</td>
     </tr>
-    {% endfor %}
   </tbody>
 </table>
+
+<button class="btn btn-info-center btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapseExample"
+  aria-expanded="false" aria-controls="collapseExample">
+  Other Routes!
+</button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    <table class="table table-striped">
+      <tbody>
+        {% for route in routes[1:] %}
+        <tr>
+          <th scope="row">{{ route[3] }}</th>
+          <td>
+            {% for r in route[0] %}
+            {{ r }}</br>
+            {% endfor %}
+          </td>
+          <td>{{ route[1] }}</td>
+          <td>{{ route[2] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
 
 </br>
 <img src="/static/map_{{ ct }}.jpeg" class="img-fluid" alt="Responsive image">
