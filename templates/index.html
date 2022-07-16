@@ -27,6 +27,40 @@
   </select>
   </br>
   </br>
+  <button class="btn btn-info-center" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Estimated Time Settings
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+          
+        <div class="form-row">
+          <label for="getin" class="form-group col-md-2">Getting In Time: </label>
+          <input type="range" id="getin" name="getinRange" min="0" max="20" value="17" oninput="this.form.getinInput.value=this.value" class="form-group col-md-8"/>
+          <input type="text" name="getinInput" min="0" max="20" value="17" oninput="this.form.getinRange.value=this.value" class="form-group col-md-1"/>
+        </div>
+        </br>
+        <div class="form-row">
+          <label for="getout" class="form-group col-md-2">Getting Out Time: </label>
+          <input type="range" id="getout" name="getoutRange" min="0" max="20" value="12" oninput="this.form.getoutInput.value=this.value" class="form-group col-md-8"/>
+          <input type="text" name="getoutInput" min="0" max="20" value="12" oninput="this.form.getoutRange.value=this.value" class="form-group col-md-1"/>
+        </div>
+        </br>
+        <div class="form-row">
+          <label for="getin" class="form-group col-md-2">Change Line Time: </label>
+          <input type="range" id="chl" name="chlRange" min="0" max="20" value="10" oninput="this.form.chlInput.value=this.value" class="form-group col-md-8"/>
+          <input type="text" name="chlInput" min="0" max="20" value="10" oninput="this.form.chlRange.value=this.value" class="form-group col-md-1"/>
+        </div>
+        </br>
+        <div class="form-row">
+          <label for="getin" class="form-group col-md-2">Each Station Time: </label>
+          <input type="range" id="est" name="estRange" min="0" max="20" value="2" oninput="this.form.estInput.value=this.value" class="form-group col-md-8"/>
+          <input type="text" name="estInput" min="0" max="20" value="2" oninput="this.form.estRange.value=this.value" class="form-group col-md-1"/>
+        </div>
+
+    </div>
+  </div>
+
   <input type="submit" value="Find Route!" class="btn btn-secondary btn-lg btn-block">
 </form>
 

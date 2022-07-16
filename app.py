@@ -8,12 +8,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-get_in = 17
-get_out = 12
-change_line = 10
-station_time = 2
 c = 'mashhad'
-
 
 def get_lines(city):
         lines = []
@@ -71,7 +66,7 @@ def get_ints_lvl_2(s,e,city):
                                 intss.append([intersections[jj][0],intersections[jj][1],intersections[ii][1],jj,ii])
     return intss
 
-def route(s,e, city):
+def route(s,e, city, get_in, get_out, change_line, station_time):
     lines = get_lines(city)
     s_lines = which_line(s,city)
     e_lines = which_line(e,city)
@@ -136,7 +131,11 @@ def index():
         start = request.form.get('start')
         end = request.form.get('dest')
         city = request.form.get('city')
-        return Response(f'<h1>{route(start, end, city)}</h1></br><a href="/">Home</a>'.replace('\n','</br></br>'))
+        get_in = int(request.form.get('getinInput'))
+        get_out = int(request.form.get('getoutInput'))
+        change_line = int(request.form.get('chlInput'))
+        station_time = int(request.form.get('estInput'))
+        return Response(f'<h1>{route(start, end, city, get_in, get_out, change_line, station_time)}</h1></br><a href="/">Home</a>'.replace('\n','</br></br>'))
 
 
 @app.route('/changecity',methods=['Post'])
