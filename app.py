@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response, redirect, session
+from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 from helpers import get_cities, get_lines, route
 
@@ -37,8 +37,9 @@ def index():
         get_out = int(request.form.get('getoutInput'))
         change_line = int(request.form.get('chlInput'))
         station_time = int(request.form.get('estInput'))
-        routes = route(start, end, city, get_in, get_out, change_line, station_time)
-        return render_template('results.html', routes=sorted(routes, key=lambda x:x[2]), ct=cc, start=start, end=end)
+        routes = route(start, end, city, get_in, get_out,
+                       change_line, station_time)
+        return render_template('results.html', routes=sorted(routes, key=lambda x: x[2]), ct=cc, start=start, end=end)
 
 
 @app.route('/changecity', methods=['Post'])

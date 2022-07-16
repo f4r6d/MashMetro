@@ -88,7 +88,7 @@ def get_ints_lvl_3(s, e, city):
     return intss
 
 
-def route(s, e, city, get_in=17, get_out=12, change_line=10, station_time=2):
+def route(s, e, city, get_in=10, get_out=7, change_line=5, station_time=2):
     lines = get_lines(city)
     s_lines = which_line(s, city)
     e_lines = which_line(e, city)
@@ -101,7 +101,8 @@ def route(s, e, city, get_in=17, get_out=12, change_line=10, station_time=2):
             stations_count = abs(lines[sl].index(s) - lines[sl].index(e))
             total = get_in + get_out + stations_count * station_time
             route_name = 'Route 0'
-            route.append(f'{s} >>>>>Toward {lines[sl][0] if (lines[sl].index(s) - lines[sl].index(e)) > 0 else lines[sl][-1]}>>>>> {e}')
+            route.append(
+                f'{s} >>>>>Toward {lines[sl][0] if (lines[sl].index(s) - lines[sl].index(e)) > 0 else lines[sl][-1]}>>>>> {e}')
             routes.append([route, stations_count, total, route_name])
             return routes
 
@@ -115,8 +116,10 @@ def route(s, e, city, get_in=17, get_out=12, change_line=10, station_time=2):
                 total = get_in + get_out + change_line + stations_count * station_time
 
                 route_name = f'Route 1-{j}:'
-                route.append(f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints) > 0 else lines[ss][-1]}>>>>> {ints}')
-                route.append(f'{ints} >>>>>Toward {lines[ee][0] if lines[ee].index(ints) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
+                route.append(
+                    f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints) > 0 else lines[ss][-1]}>>>>> {ints}')
+                route.append(
+                    f'{ints} >>>>>Toward {lines[ee][0] if lines[ee].index(ints) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
                 routes.append([route, stations_count, total, route_name])
 
         if intss_2 := get_ints_lvl_2(s, e, city):
@@ -132,9 +135,12 @@ def route(s, e, city, get_in=17, get_out=12, change_line=10, station_time=2):
                         ints_1) - lines[mm].index(ints_2)) + abs(lines[ee].index(e) - lines[ee].index(ints_2))
                 total = get_in + get_out + change_line * 2 + stations_count * station_time
                 route_name = f'Route 2-{j}:'
-                route.append(f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints_1) > 0 else lines[ss][-1]}>>>>> {ints_1}')
-                route.append(f'{ints_1} >>>>>Toward {lines[mm][0] if lines[mm].index(ints_1) - lines[mm].index(ints_2) > 0 else lines[mm][-1]}>>>>> {ints_2}')
-                route.append(f'{ints_2} >>>>>Toward {lines[ee][0] if lines[ee].index(ints_2) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
+                route.append(
+                    f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints_1) > 0 else lines[ss][-1]}>>>>> {ints_1}')
+                route.append(
+                    f'{ints_1} >>>>>Toward {lines[mm][0] if lines[mm].index(ints_1) - lines[mm].index(ints_2) > 0 else lines[mm][-1]}>>>>> {ints_2}')
+                route.append(
+                    f'{ints_2} >>>>>Toward {lines[ee][0] if lines[ee].index(ints_2) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
                 routes.append([route, stations_count, total, route_name])
 
         if intss_3 := get_ints_lvl_3(s, e, city):
@@ -150,10 +156,14 @@ def route(s, e, city, get_in=17, get_out=12, change_line=10, station_time=2):
                         ints_2)) + abs(lines[nn].index(ints_2) - lines[nn].index(ints_3)) + abs(lines[ee].index(ints_3) - lines[ee].index(e))
                 total = get_in + get_out + change_line * 2 + stations_count * station_time
                 route_name = f'Route 3-{j}:'
-                route.append(f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints_1) > 0 else lines[ss][-1]}>>>>> {ints_1}')
-                route.append(f'{ints_1} >>>>>Toward {lines[mm][0] if lines[mm].index(ints_1) - lines[mm].index(ints_2) > 0 else lines[mm][-1]}>>>>> {ints_2}')
-                route.append(f'{ints_2} >>>>>Toward {lines[nn][0] if lines[nn].index(ints_2) - lines[nn].index(ints_3) > 0 else lines[nn][-1]}>>>>> {ints_3}')
-                route.append(f'{ints_3} >>>>>Toward {lines[ee][0] if lines[ee].index(ints_3) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
+                route.append(
+                    f'{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints_1) > 0 else lines[ss][-1]}>>>>> {ints_1}')
+                route.append(
+                    f'{ints_1} >>>>>Toward {lines[mm][0] if lines[mm].index(ints_1) - lines[mm].index(ints_2) > 0 else lines[mm][-1]}>>>>> {ints_2}')
+                route.append(
+                    f'{ints_2} >>>>>Toward {lines[nn][0] if lines[nn].index(ints_2) - lines[nn].index(ints_3) > 0 else lines[nn][-1]}>>>>> {ints_3}')
+                route.append(
+                    f'{ints_3} >>>>>Toward {lines[ee][0] if lines[ee].index(ints_3) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}')
                 routes.append([route, stations_count, total, route_name])
 
     return sorted(routes, key=lambda x: x[2])

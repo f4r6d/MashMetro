@@ -6,12 +6,18 @@
 
 <h1>{{ ct|title }} Subway {{ start }} To {{ end }} Route Routes!</h1>
 
-
+</br>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">
+        {% if routes|length > 1 %}
+          {{ routes|length }} Routes
+        {% else %}
+          1 Route
+        {% endif %}
+      </th>
       <th scope="col">Route</th>
       <th scope="col">Stations</th>
       <th scope="col">Estimated Time</th>
@@ -19,19 +25,22 @@
   </thead>
   <tbody>
     {% for route in routes %}
-      <tr>
-        <th scope="row">{{ route[3] }}</th>
-        <td>
-            {% for r in route[0] %}
-              {{ r }}</br>
-            {% endfor %}
-        </td>
-        <td>{{ route[1] }}</td>
-        <td>{{ route[2] }}</td>
-      </tr>
+    <tr>
+      <th scope="row">{{ route[3] }}</th>
+      <td>
+        {% for r in route[0] %}
+        {{ r }}</br>
+        {% endfor %}
+      </td>
+      <td>{{ route[1] }}</td>
+      <td>{{ route[2] }}</td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
+
+</br>
+<img src="/static/map_{{ ct }}.jpeg" class="img-fluid" alt="Responsive image">
 
 
 {% endblock %}
