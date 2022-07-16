@@ -15,10 +15,8 @@ c = 'mashhad'
 def index():
     if request.method == 'GET':
         cities = sorted(get_cities())
-        print(cities)
         try:
             cc = session['city']
-            print(cc)
         except:
             cc = c
         stations = set()
@@ -26,7 +24,12 @@ def index():
             for station in line:
                 stations.add(station)
         return render_template('index.html', stations=sorted(stations), cities=cities, ct=cc)
+
     elif request.method == 'POST':
+        try:
+            cc = session['city']
+        except:
+            cc = c
         start = request.form.get('start')
         end = request.form.get('dest')
         city = request.form.get('city')
@@ -34,7 +37,8 @@ def index():
         get_out = int(request.form.get('getoutInput'))
         change_line = int(request.form.get('chlInput'))
         station_time = int(request.form.get('estInput'))
-        return Response(f'<h1>{route(start, end, city, get_in, get_out, change_line, station_time)}</h1></br><a href="/">Home</a>'.replace('\n', '</br></br>'))
+        routes = route(start, end, city, get_in, get_out, change_line, station_time)
+        return render_template('results.html', routes=sorted(routes, key=lambda x:x[2]), ct=cc, start=start, end=end)
 
 
 @app.route('/changecity', methods=['Post'])

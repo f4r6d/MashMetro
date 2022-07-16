@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ ct|title }} Subway Routes!{% endblock %}
+
+{% block main %}
+
+<h1>{{ ct|title }} Subway {{ start }} To {{ end }} Route Routes!</h1>
+
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Route</th>
+      <th scope="col">Stations</th>
+      <th scope="col">Estimated Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for route in routes %}
+      <tr>
+        <th scope="row">{{ route[3] }}</th>
+        <td>
+            {% for r in route[0] %}
+              {{ r }}</br>
+            {% endfor %}
+        </td>
+        <td>{{ route[1] }}</td>
+        <td>{{ route[2] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
