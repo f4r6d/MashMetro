@@ -161,3 +161,4 @@ cython_debug/
 #.idea/
 templates/app.py
 flask_session/
+templates/.DS_Store

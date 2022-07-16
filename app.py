@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Response, redirect, session
-
 from flask_session import Session
+import os
 
 app = Flask(__name__)
 
@@ -10,9 +10,16 @@ Session(app)
 
 c = 'mashhad'
 
+def get_cities(p='static/'):
+    cities = set()
+    for file in os.listdir(p):
+        if file.endswith('.txt'):
+            cities.add(file[:-4])
+    return cities
+
 def get_lines(city):
         lines = []
-        with open(f'{city}.txt','r') as f:
+        with open(f'static/{city}.txt','r') as f:
             for line in f:
                 lines.append(line.strip().split())
         return lines
@@ -66,6 +73,27 @@ def get_ints_lvl_2(s,e,city):
                                 intss.append([intersections[jj][0],intersections[jj][1],intersections[ii][1],jj,ii])
     return intss
 
+def get_ints_lvl_3(s,e,city):
+    intersections = get_intersextions(city)
+    s_lines = which_line(s,city)
+    e_lines = which_line(e,city)
+    intss = []
+    for sl in s_lines:
+            for el in e_lines:
+                for ii in intersections:
+                    for kk in intersections:
+                        for jj in intersections:
+                            if ii == jj:
+                                continue
+                            if (intersections[ii][0] == sl and intersections[jj][1] == el):
+                                if (intersections[ii][1] == intersections[kk][0]) and (intersections[kk][1] == intersections[jj][0]):
+                                    intss.append([intersections[ii][0],intersections[kk][0],intersections[kk][1],intersections[jj][1],ii,kk,jj])
+                            if (intersections[jj][0] == el and intersections[ii][1] == sl):
+                                if (intersections[jj][1] == intersections[kk][1]) and (intersections[kk][0] == intersections[ii][0]):
+                                    intss.append([intersections[jj][0],intersections[kk][1],intersections[kk][0],intersections[ii][1],jj,kk,ii])
+    return intss
+
+
 def route(s,e, city, get_in, get_out, change_line, station_time):
     lines = get_lines(city)
     s_lines = which_line(s,city)
@@ -93,10 +121,9 @@ def route(s,e, city, get_in, get_out, change_line, station_time):
                 route += f'\n{ints} >>>>>Toward {lines[ee][0] if lines[ee].index(ints) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}'
                 route += f'\nTotal Stations: {stations_count}'
                 route += f'\nEstimatad time: {total} minutes\n'
-
             return route
-        else:
-            intss_2 = get_ints_lvl_2(s,e,city)
+
+        elif intss_2 := get_ints_lvl_2(s,e,city):
             route = ''
             for j, i in enumerate(intss_2,1):
                 try:
@@ -113,20 +140,42 @@ def route(s,e, city, get_in, get_out, change_line, station_time):
                 route += f'\nTotal Stations: {stations_count}'
                 route += f'\nEstimatad time: {total} minutes\n'
             return route
+        
+        elif intss_3 := get_ints_lvl_3(s,e,city):
+            route = ''
+            for j, i in enumerate(intss_3,1):
+                try:
+                    ss, mm, nn, ee, ints_1, ints_2, ints_3 = i
+                    stations_count = abs(lines[ss].index(s) - lines[ss].index(ints_1)) + abs(lines[mm].index(ints_1) - lines[mm].index(ints_2)) + abs(lines[nn].index(ints_2) - lines[nn].index(ints_3)) + abs(lines[ee].index(ints_3) - lines[ee].index(e))
+                except:
+                    ee, nn, mm, ss, ints_3, ints_2, ints_1 = i
+                    stations_count = abs(lines[ss].index(s) - lines[ss].index(ints_1)) + abs(lines[mm].index(ints_1) - lines[mm].index(ints_2)) + abs(lines[nn].index(ints_2) - lines[nn].index(ints_3)) + abs(lines[ee].index(ints_3) - lines[ee].index(e))
+                total = get_in + get_out + change_line * 2 + stations_count * station_time
+                route += f'\nRoute {j}:'
+                route += f'\n{s} >>>>>Toward {lines[ss][0] if lines[ss].index(s) - lines[ss].index(ints_1) > 0 else lines[ss][-1]}>>>>> {ints_1}'
+                route += f'\n{ints_1} >>>>>Toward {lines[mm][0] if lines[mm].index(ints_1) - lines[mm].index(ints_2) > 0 else lines[mm][-1]}>>>>> {ints_2}'
+                route += f'\n{ints_2} >>>>>Toward {lines[nn][0] if lines[nn].index(ints_2) - lines[nn].index(ints_3) > 0 else lines[nn][-1]}>>>>> {ints_3}'
+                route += f'\n{ints_3} >>>>>Toward {lines[ee][0] if lines[ee].index(ints_3) - lines[ee].index(e) > 0 else lines[ee][-1]}>>>>> {e}'
+                route += f'\nTotal Stations: {stations_count}'
+                route += f'\nEstimatad time: {total} minutes\n'
+            return route
 
 
 @app.route('/', methods=['GET', 'Post'])
 def index():
     if request.method == 'GET':
+        cities = sorted(get_cities())
+        print(cities)
         try:
             cc = session['city']
+            print(cc)
         except:
             cc = c
         stations = set()
         for line in get_lines(cc):
             for station in line:
                 stations.add(station)
-        return render_template('index.html', stations=sorted(stations), city=cc.title())
+        return render_template('index.html', stations=sorted(stations), cities=cities, ct=cc)
     elif request.method == 'POST':
         start = request.form.get('start')
         end = request.form.get('dest')

@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}{{ city }} Subway Route Finder!{% endblock %}
+{% block title %}{{ ct|title }} Subway Route Finder!{% endblock %}
 
 {% block main %}
 
-<h1>{{ city }} Subway Route Finder!</h1>
+<h1>{{ ct|title }} Subway Route Finder!</h1>
 
 
 <form method="POST" action="/" class="form-group align-items-center" id="cityform">
   <label for="city">City: </label>
   <select id="city" name="city" class="custom-select" onchange="changecity()">
-      <option {% if city == 'Mashhad' %}selected{% endif %} value="mashhad">Mashhad</option>
-      <option {% if city == 'Tehran' %}selected{% endif %} value="tehran">Tehran</option>
+      {% for c in cities %}
+      <option value="{{ c }}" {%if c == ct %}selected{% endif %}>{{ c|title }}</option>
+      {% endfor %}
   </select>
   <label for="start">Start: </label>
   <select id="start" name="start" class="custom-select">
