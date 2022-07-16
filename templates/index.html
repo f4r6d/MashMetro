@@ -17,13 +17,13 @@
   <label for="start">Start: </label>
   <select id="start" name="start" class="custom-select">
     {% for s in stations %}
-    <option value="{{ s }}">{{ s }}</option>
+    <option {% if s.startswith('Line') %}disabled{% endif %} value="{{ s }}">{{ s|replace('_',' ') }}</option>
     {% endfor %}
   </select>
   <label for="dest">Destination: </label>
   <select id="dest" name="dest" class="custom-select">
     {% for s in stations %}
-    <option value="{{ s }}">{{ s }}</option>
+    <option {% if s.startswith('Line') %}disabled{% endif %} value="{{ s }}">{{ s|replace('_',' ') }}</option>
     {% endfor %}
   </select>
   </br>

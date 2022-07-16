@@ -4,7 +4,7 @@
 
 {% block main %}
 
-<h1>{{ ct|title }} Subway {{ start|replace('_',' ') }} To {{ end|replace('_',' ') }} Route Routes!</h1>
+<h1>{{ ct|title }} Subway; {{ start|replace('_',' ') }} To {{ end|replace('_',' ') }} Routes!</h1>
 
 </br>
 
@@ -28,7 +28,7 @@
       <th scope="row">{{ routes[0][3] }}</th>
       <td>
         {% for r in routes[0][0] %}
-        {{ r }}</br>
+        {{ r|replace('_',' ') }}</br>
         {% endfor %}
       </td>
       <td>{{ routes[0][1] }}</td>
@@ -52,7 +52,7 @@
             <th scope="row">{{ route[3] }}</th>
             <td>
               {% for r in route[0] %}
-              {{ r }}</br>
+              {{ r|replace('_',' ') }}</br>
               {% endfor %}
             </td>
             <td>{{ route[1] }}</td>

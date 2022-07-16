@@ -19,11 +19,12 @@ def index():
             cc = session['city']
         except:
             cc = c
-        stations = set()
-        for line in get_lines(cc):
+        stations = list()
+        for i, line in enumerate(get_lines(cc), 1):
+            stations.append(f'Line {i} stations:')
             for station in line:
-                stations.add(station)
-        return render_template('index.html', stations=sorted(stations), cities=cities, ct=cc)
+                stations.append(station)
+        return render_template('index.html', stations=stations, cities=cities, ct=cc)
 
     elif request.method == 'POST':
         try:
