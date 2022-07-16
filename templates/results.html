@@ -37,36 +37,35 @@
   </tbody>
 </table>
 
-<button class="btn btn-info-center btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapseExample"
-  aria-expanded="false" aria-controls="collapseExample">
-  Other Routes!
-</button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    <table class="table table-striped">
-      <tbody>
-        {% for route in routes[1:] %}
-        <tr>
-          <th scope="row">{{ route[3] }}</th>
-          <td>
-            {% for r in route[0] %}
-            {{ r }}</br>
-            {% endfor %}
-          </td>
-          <td>{{ route[1] }}</td>
-          <td>{{ route[2] }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{% if routes|length > 1 %}
+  <button class="btn btn-info-center btn-lg btn-block" type="button" data-toggle="collapse" data-target="#collapseExample"
+    aria-expanded="false" aria-controls="collapseExample">
+    Other Routes!
+  </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <table class="table table-striped">
+        <tbody>
+          {% for route in routes[1:] %}
+          <tr>
+            <th scope="row">{{ route[3] }}</th>
+            <td>
+              {% for r in route[0] %}
+              {{ r }}</br>
+              {% endfor %}
+            </td>
+            <td>{{ route[1] }}</td>
+            <td>{{ route[2] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-
-
+{% endif %}
 
 </br>
 <img src="/static/map_{{ ct }}.jpeg" class="img-fluid" alt="Responsive image">
-
 
 {% endblock %}
